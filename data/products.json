@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "Güipil bordado a mano",
+    "category": "Ropa",
+    "brand": "Telar Maya",
+    "origin": "Sololá, Guatemala",
+    "price_gtq": 350,
+    "in_stock": true
+  },
+  {
+    "id": 2,
+    "name": "Taza de barro artesanal",
+    "category": "Hogar",
+    "brand": "Barro Chinautla",
+    "origin": "Chinautla, Guatemala",
+    "price_gtq": 85,
+    "in_stock": true
+  },
+  {
+    "id": 3,
+    "name": "Café de altura tostado 340g",
+    "category": "Alimentos",
+    "brand": "Finca La Esperanza",
+    "origin": "Huehuetenango, Guatemala",
+    "price_gtq": 65,
+    "in_stock": false
+  }
+]
