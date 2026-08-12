@@ -62,8 +62,7 @@
       </button>
       <div class="collapse navbar-collapse" id="nav">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
-          <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#catalogo">Catálogo</a></li>
           <li class="nav-item"><a class="nav-link" href="#">🛒 Carrito</a></li>
         </ul>
       </div>
@@ -118,13 +117,11 @@
     function tarjeta(p) {
       const icono = iconos[p.category] || "🛍️";
       const precio = `Q${Number(p.price_gtq).toFixed(2)}`;
-      const accion = p.in_stock
-        ? `<button class="btn btn-nm w-100 mt-2">Agregar al carrito</button>`
-        : `<button class="btn btn-outline-secondary w-100 mt-2">Avísame cuando esté disponible</button>`;
+      const accion = `<button class="btn btn-nm w-100 mt-2">Ver producto</button>`;
       const estado = p.in_stock ? "" : `<span class="badge bg-secondary ms-2">Agotado</span>`;
       return `
         <div class="col-12 col-sm-6 col-lg-4">
-          <div class="product-card h-100 shadow-sm">
+          <div class="product-card h-100 shadow-sm" style="cursor:pointer" onclick="location.href='producto.html?id=${p.id}'">
             <div class="product-thumb">${icono}</div>
             <div class="p-3 d-flex flex-column flex-grow-1">
               <span class="brand-badge mb-2">🇬🇹 ${p.origin}</span>

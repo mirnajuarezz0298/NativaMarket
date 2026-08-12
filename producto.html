@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NativaMarket — Ficha de producto</title>
+
+  <!-- Google Fonts: Libre Baskerville (headings) + Karla (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --nm-primary: #4A2545;   /* ciruela */
+      --nm-accent:  #C06C84;   /* rosa */
+      --nm-bg:      #F7F0F5;   /* crema rosado */
+    }
+    body {
+      background-color: var(--nm-bg);
+      font-family: 'Karla', sans-serif;
+      color: #2E2630;
+    }
+    h1, h2, h3, h4, h5, .navbar-brand {
+      font-family: 'Libre Baskerville', serif;
+    }
+    .navbar-nm { background-color: var(--nm-primary); }
+    .navbar-nm .navbar-brand,
+    .navbar-nm .nav-link { color: var(--nm-bg); }
+    .navbar-nm .nav-link:hover { color: #fff; }
+    .brand-badge {
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: rgba(74,37,69,.10); color: var(--nm-primary);
+      font-size: .82rem; font-weight: 600;
+      padding: .25rem .6rem; border-radius: 999px;
+    }
+    .price { color: var(--nm-accent); font-family: 'Libre Baskerville', serif; font-weight: 700; }
+    .btn-nm { background-color: var(--nm-accent); border-color: var(--nm-accent); color: #fff; }
+    .btn-nm:hover { background-color: #a85870; border-color: #a85870; color: #fff; }
+    .btn-volver { color: var(--nm-primary); font-weight: 600; text-decoration: none; }
+    .btn-volver:hover { text-decoration: underline; color: var(--nm-primary); }
+    .detail-thumb {
+      background:#EFE1EA; border-radius:16px; height:340px;
+      display:flex; align-items:center; justify-content:center; font-size:7rem;
+    }
+    footer { background: var(--nm-primary); color: var(--nm-bg); }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-nm py-3">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-4" href="index.html">NativaMarket</a>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="index.html#catalogo">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">🛒 Carrito</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <a href="index.html" class="btn-volver d-inline-block mb-4">← Volver al catálogo</a>
+    <div class="row g-5 align-items-start" id="detalle">
+      <div class="col-12 text-center text-muted py-5">Cargando producto…</div>
+    </div>
+  </main>
+
+  <footer class="py-4 mt-4">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <span class="fw-semibold">NativaMarket</span>
+      <small>Lo hecho en Guatemala, reunido en un solo lugar.</small>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const iconos = { "Ropa": "👕", "Hogar": "🏺", "Alimentos": "☕" };
+
+    function estadoVacio() {
+      return `
+        <div class="col-12 text-center py-5">
+          <p class="fs-4 mb-3" style="font-family:'Libre Baskerville',serif;color:var(--nm-primary)">
+            No encontramos este producto.
+          </p>
+          <p class="text-muted mb-4">Vuelve al catálogo para seguir explorando.</p>
+          <a href="index.html" class="btn btn-nm px-4">Ir al catálogo</a>
+        </div>`;
+    }
+
+    function detalle(p) {
+      const icono = iconos[p.category] || "🛍️";
+      const precio = `Q${Number(p.price_gtq).toFixed(2)}`;
+      const descripcion = `${p.name} de ${p.brand}, hecho en ${p.origin}. Un producto ${p.category.toLowerCase()} nacional, seleccionado por su calidad y su origen guatemalteco.`;
+      const accion = p.in_stock
+        ? `<button class="btn btn-nm btn-lg px-4 mt-2">Agregar al carrito</button>`
+        : `<button class="btn btn-outline-secondary btn-lg px-4 mt-2">Avísame cuando esté disponible</button>`;
+      const estado = p.in_stock
+        ? `<span class="badge text-bg-success ms-2 align-middle">Disponible</span>`
+        : `<span class="badge bg-secondary ms-2 align-middle">Agotado</span>`;
+      return `
+        <div class="col-12 col-lg-6">
+          <div class="detail-thumb shadow-sm">${icono}</div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <span class="brand-badge mb-3">🇬🇹 Hecho en ${p.origin}</span>
+          <h1 class="mb-1">${p.name}</h1>
+          <p class="text-muted mb-3">${p.brand} · ${p.category} ${estado}</p>
+          <p class="mb-4" style="max-width:46ch">${descripcion}</p>
+          <div class="price display-6 mb-1">${precio}</div>
+          <div>${accion}</div>
+        </div>`;
+    }
+
+    const id = Number(new URLSearchParams(location.search).get('id'));
+    fetch('data/products.json')
+      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+      .then(productos => {
+        const p = productos.find(x => x.id === id);
+        document.getElementById('detalle').innerHTML = p ? detalle(p) : estadoVacio();
+      })
+      .catch(() => {
+        document.getElementById('detalle').innerHTML =
+          `<div class="col-12 text-center text-danger py-5">
+             No se pudo cargar el producto. Recuerda abrir la página con un servidor (Live Server), no con doble clic.
+           </div>`;
+      });
+  </script>
+</body>
+</html>
