@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NativaMarket — Hecho en Guatemala</title>
+
+  <!-- Google Fonts: Libre Baskerville (headings) + Karla (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --nm-primary: #4A2545;   /* ciruela */
+      --nm-accent:  #C06C84;   /* rosa */
+      --nm-bg:      #F7F0F5;   /* crema rosado */
+    }
+    body {
+      background-color: var(--nm-bg);
+      font-family: 'Karla', sans-serif;
+      color: #2E2630;
+    }
+    h1, h2, h3, h4, h5, .navbar-brand {
+      font-family: 'Libre Baskerville', serif;
+    }
+    .navbar-nm { background-color: var(--nm-primary); }
+    .navbar-nm .navbar-brand,
+    .navbar-nm .nav-link { color: var(--nm-bg); }
+    .navbar-nm .nav-link:hover { color: #fff; }
+    .brand-badge {
+      display: inline-flex; align-items: center; gap: .35rem;
+      background: rgba(74,37,69,.10); color: var(--nm-primary);
+      font-size: .78rem; font-weight: 600;
+      padding: .2rem .55rem; border-radius: 999px;
+    }
+    .hero {
+      background: linear-gradient(180deg, #EFE1EA 0%, var(--nm-bg) 100%);
+      border-bottom: 1px solid rgba(74,37,69,.12);
+    }
+    .price { color: var(--nm-accent); font-family: 'Libre Baskerville', serif; font-weight: 700; }
+    .btn-nm { background-color: var(--nm-accent); border-color: var(--nm-accent); color: #fff; }
+    .btn-nm:hover { background-color: #a85870; border-color: #a85870; color: #fff; }
+    .product-card { border: none; border-radius: 14px; overflow: hidden; transition: transform .15s ease, box-shadow .15s ease; background:#fff; display:flex; flex-direction:column; }
+    .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(74,37,69,.15); }
+    .product-thumb { height: 170px; display:flex; align-items:center; justify-content:center; font-size:3.2rem; background:#EFE1EA; }
+    .chip { background:#fff; border:1px solid rgba(74,37,69,.25); color:var(--nm-primary); border-radius:999px; padding:.35rem .9rem; font-size:.85rem; font-weight:600; }
+    footer { background: var(--nm-primary); color: var(--nm-bg); }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-nm py-3">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-4" href="#">NativaMarket</a>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="#catalogo">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">🛒 Carrito</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero py-5">
+    <div class="container py-4 text-center">
+      <span class="brand-badge mb-3">🇬🇹 Hecho en Guatemala</span>
+      <h1 class="display-5 fw-bold mt-2" style="color:var(--nm-primary)">Descubre lo hecho en Guatemala</h1>
+      <p class="lead mx-auto mt-3" style="max-width:620px">
+        Ropa, hogar y alimentos de fabricantes nacionales, en un solo lugar y con sello de origen.
+        Compra local, compra con confianza.
+      </p>
+      <a href="#catalogo" class="btn btn-nm btn-lg mt-2 px-4">Explorar el catálogo</a>
+    </div>
+  </header>
+
+  <!-- Catálogo -->
+  <main class="container py-5" id="catalogo">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+      <h2 class="fw-bold m-0" style="color:var(--nm-primary)">Catálogo</h2>
+      <div class="d-flex flex-wrap gap-2" id="filtros">
+        <span class="chip">Todos</span>
+        <span class="chip">Ropa</span>
+        <span class="chip">Hogar</span>
+        <span class="chip">Alimentos</span>
+      </div>
+    </div>
+
+    <div class="row g-4" id="grid">
+      <!-- Las tarjetas se generan desde data/products.json -->
+      <div class="col-12 text-center text-muted py-5" id="loading">Cargando productos…</div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-4 mt-4">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <span class="fw-semibold">NativaMarket</span>
+      <small>Lo hecho en Guatemala, reunido en un solo lugar.</small>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const iconos = { "Ropa": "👕", "Hogar": "🏺", "Alimentos": "☕" };
+
+    function tarjeta(p) {
+      const icono = iconos[p.category] || "🛍️";
+      const precio = `Q${Number(p.price_gtq).toFixed(2)}`;
+      const accion = p.in_stock
+        ? `<button class="btn btn-nm w-100 mt-2">Agregar al carrito</button>`
+        : `<button class="btn btn-outline-secondary w-100 mt-2">Avísame cuando esté disponible</button>`;
+      const estado = p.in_stock ? "" : `<span class="badge bg-secondary ms-2">Agotado</span>`;
+      return `
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="product-card h-100 shadow-sm">
+            <div class="product-thumb">${icono}</div>
+            <div class="p-3 d-flex flex-column flex-grow-1">
+              <span class="brand-badge mb-2">🇬🇹 ${p.origin}</span>
+              <h5 class="mb-1">${p.name}${estado}</h5>
+              <p class="text-muted mb-2 small">${p.brand} · ${p.category}</p>
+              <div class="mt-auto">
+                <span class="price fs-5">${precio}</span>
+                ${accion}
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    fetch('data/products.json')
+      .then(r => {
+        if (!r.ok) throw new Error('No se pudo cargar el catálogo');
+        return r.json();
+      })
+      .then(productos => {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = productos.map(tarjeta).join('');
+      })
+      .catch(err => {
+        document.getElementById('grid').innerHTML =
+          `<div class="col-12 text-center text-danger py-5">
+             ${err.message}. Recuerda abrir la página con un servidor (Live Server), no con doble clic.
+           </div>`;
+      });
+  </script>
+</body>
+</html>
