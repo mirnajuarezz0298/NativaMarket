@@ -16,7 +16,9 @@ NativaMarket es un marketplace web para el consumidor guatemalteco que quiere co
 Cálido, local, confiable. Not this: no debe sentirse como un bazar frío y genérico tipo Temu lleno de productos importados sin identidad — nada de azul corporativo ni fotos de stock impersonales.
 
 ## Screens
-- Inicio (home) — catálogo de productos hechos en Guatemala con su sello de origen
+- Catálogo (home) — lista de productos hechos en Guatemala con su sello de origen
+- Ficha de producto — detalle de un producto para decidirse y comprarlo
+- Todas las pantallas comparten el navbar superior; desde la Ficha de producto se regresa al catálogo con "Volver".
 
 ## Stack, pinned
 Plain HTML, CSS and JavaScript reading a local JSON file, styled with Bootstrap 5 loaded from a
