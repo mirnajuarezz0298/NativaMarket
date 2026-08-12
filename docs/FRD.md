@@ -2,28 +2,30 @@
 
 Este documento describe, pantalla por pantalla, cada funcionalidad **Must** del MVP: qué ve el usuario, qué entra (inputs), qué sale (outputs) y los casos borde que hay que manejar.
 
+> **Estado del prototipo (D2):** el **Feature 1 (Catálogo + Ficha de producto)** está construido y cableado a los datos de `data/products.json`, con navegación en ambos sentidos. Los **Features 2, 3 y 4** son el roadmap del MVP y todavía no están implementados en el prototipo.
+
 ---
 
-## Feature 1 — Catálogo y ficha de producto con sello de origen
+## Feature 1 — Catálogo y ficha de producto con sello de origen *(construido)*
 
-### Pantalla A: Catálogo
-- **Qué ve el usuario:** una cuadrícula de productos. Cada tarjeta muestra foto, nombre, fabricante, precio en GTQ y una etiqueta de "Hecho en Guatemala" con el lugar de origen. Arriba: barra de búsqueda y filtros por categoría (ropa, calzado, accesorios, muebles, alimentos).
-- **Inputs:** texto de búsqueda; selección de categoría; (opcional) orden por precio.
-- **Outputs:** lista filtrada de productos; contador de resultados.
+### Pantalla A: Catálogo (home)
+- **Qué ve el usuario:** una cuadrícula de productos generada desde el archivo de datos. Cada tarjeta muestra la imagen del producto, nombre, fabricante, categoría, precio en GTQ y una etiqueta de "Hecho en Guatemala" con el lugar de origen. Arriba hay filtros por categoría (Todos, Ropa, Hogar, Alimentos).
+- **Inputs:** selección de categoría; clic en una tarjeta ("Ver producto").
+- **Outputs:** la lista de productos renderizada; al abrir un producto se navega a su ficha.
 - **Casos borde:**
-  - Búsqueda sin resultados → mensaje "No encontramos productos" + sugerencia de quitar filtros.
-  - Producto agotado → se muestra con etiqueta "Agotado" y botón "Avísame" (ver Feature 4), no botón de compra.
-  - Carga lenta / sin conexión → estado de carga y mensaje de error con opción de reintentar.
+  - No hay productos que mostrar (categoría vacía) → mensaje amable "Todavía no hay productos en esta categoría. Prueba con otra."
+  - Producto agotado → se muestra con etiqueta "Agotado", sin botón de compra en la tarjeta.
+  - Datos no disponibles / página abierta sin servidor → mensaje de error recordando abrirla servida (no con doble clic).
 
 ### Pantalla B: Ficha de producto
-- **Qué ve el usuario:** fotos, nombre, descripción, precio, **sello de origen** (fabricante + departamento de Guatemala), disponibilidad y botón "Agregar al carrito".
-- **Inputs:** cantidad; botón "Agregar al carrito".
-- **Outputs:** confirmación visual de que se agregó; actualización del contador del carrito.
+- **Qué ve el usuario:** imagen grande del producto, **sello de origen** ("Hecho en" + fabricante y departamento de Guatemala), nombre, fabricante y categoría, insignia de disponibilidad, una descripción, precio y el botón principal ("Agregar al carrito" si está disponible, o "Avísame cuando esté disponible" si está agotado). Un enlace "Volver al catálogo" regresa a la Pantalla A.
+- **Inputs:** el producto se identifica por su `id` en la dirección; botón principal; enlace "Volver al catálogo".
+- **Outputs:** el detalle del producto correspondiente renderizado desde el archivo de datos.
 - **Casos borde:**
-  - Cantidad mayor al stock disponible → se limita al máximo y se avisa.
-  - Producto quedó agotado mientras se veía → el botón cambia a "Avísame".
+  - Producto no encontrado (id inválido) → estado vacío amable "No encontramos este producto. Vuelve al catálogo para seguir explorando."
+  - Producto agotado → el botón principal cambia a "Avísame cuando esté disponible".
 
-## Feature 2 — Carrito de compras y checkout con envío
+## Feature 2 — Carrito de compras y checkout con envío *(roadmap, no implementado aún)*
 
 ### Pantalla A: Carrito
 - **Qué ve el usuario:** lista de productos agregados (con fabricante), cantidad editable, subtotal por producto y total. Botón "Continuar al pago".
@@ -42,7 +44,7 @@ Este documento describe, pantalla por pantalla, cada funcionalidad **Must** del 
   - Pago rechazado → mensaje de error y opción de reintentar sin perder el pedido.
   - Dirección fuera de cobertura de envío → aviso antes de confirmar.
 
-## Feature 3 — Respaldo de garantía vía soporte
+## Feature 3 — Respaldo de garantía vía soporte *(roadmap, no implementado aún)*
 
 ### Pantalla: Soporte / Devolución
 - **Qué ve el usuario:** acceso desde el detalle del pedido a "Reportar un problema / Solicitar devolución". Formulario con motivo, pedido asociado y opción de adjuntar foto.
