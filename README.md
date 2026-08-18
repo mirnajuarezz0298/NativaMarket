@@ -4,9 +4,9 @@ NativaMarket es un marketplace donde cualquier consumidor guatemalteco puede des
 
 ## Demo en vivo
 
-👉 **https://mirnajuarezz0298.github.io/NativaMarket/**
+👉 **https://nativa-market.vercel.app/**
 
-El prototipo abre en esa URL (GitHub Pages). Muestra el **Catálogo** (home) con los productos hechos en Guatemala y su sello de origen, cargados desde `data/products.json`, y la **Ficha de producto**, a la que se llega al abrir cualquier producto y desde la que se regresa al catálogo.
+El prototipo abre en esa URL (Vercel). Muestra el **Catálogo** (home) con los productos hechos en Guatemala y su sello de origen, cargados desde `data/products.json`, la **Ficha de producto** (a la que se llega al abrir cualquier producto y desde la que se regresa al catálogo), y el formulario **"Avísame cuando esté disponible"**, que guarda el aviso en Supabase.
 
 > Para verlo localmente, ábrelo **servido** (por ejemplo con la extensión Live Server de VS Code), no con doble clic: una página abierta con doble clic no puede leer su archivo de datos.
 

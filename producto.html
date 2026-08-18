@@ -104,7 +104,7 @@
       const descripcion = `${p.name} de ${p.brand}, hecho en ${p.origin}. Un producto ${p.category.toLowerCase()} nacional, seleccionado por su calidad y su origen guatemalteco.`;
       const accion = p.in_stock
         ? `<button class="btn btn-nm btn-lg px-4 mt-2">Agregar al carrito</button>`
-        : `<button class="btn btn-outline-secondary btn-lg px-4 mt-2">Avísame cuando esté disponible</button>`;
+        : `<a href="aviso.html?producto=${encodeURIComponent(p.name)}" class="btn btn-nm btn-lg px-4 mt-2">Avísame cuando esté disponible</a>`;
       const estado = p.in_stock
         ? `<span class="badge text-bg-success ms-2 align-middle">Disponible</span>`
         : `<span class="badge bg-secondary ms-2 align-middle">Agotado</span>`;

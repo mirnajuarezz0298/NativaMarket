@@ -95,6 +95,7 @@
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // Poblar el select de productos desde el catálogo
+    const productoParam = new URLSearchParams(location.search).get('producto');
     fetch('data/products.json')
       .then(r => r.json())
       .then(productos => {
@@ -105,6 +106,12 @@
           o.textContent = p.name;
           sel.appendChild(o);
         });
+        // Pre-seleccionar el producto si viene en la URL (desde la ficha)
+        // y bloquear el dropdown para que no se pueda cambiar.
+        if (productoParam) {
+          sel.value = productoParam;
+          if (sel.value === productoParam) sel.disabled = true;
+        }
       })
       .catch(() => {});
 
