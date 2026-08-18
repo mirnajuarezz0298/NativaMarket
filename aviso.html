@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NativaMarket — Avísame cuando esté disponible</title>
+
+  <!-- Google Fonts: Libre Baskerville (headings) + Karla (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --nm-primary: #4A2545;   /* ciruela */
+      --nm-accent:  #C06C84;   /* rosa */
+      --nm-bg:      #F7F0F5;   /* crema rosado */
+    }
+    body { background-color: var(--nm-bg); font-family: 'Karla', sans-serif; color: #2E2630; }
+    h1, h2, h3, h4, h5, .navbar-brand { font-family: 'Libre Baskerville', serif; }
+    .navbar-nm { background-color: var(--nm-primary); }
+    .navbar-nm .navbar-brand, .navbar-nm .nav-link { color: var(--nm-bg); }
+    .navbar-nm .nav-link:hover { color: #fff; }
+    .btn-nm { background-color: var(--nm-accent); border-color: var(--nm-accent); color: #fff; }
+    .btn-nm:hover { background-color: #a85870; border-color: #a85870; color: #fff; }
+    .form-card { background:#fff; border-radius:16px; }
+    .form-control:focus, .form-select:focus { border-color: var(--nm-accent); box-shadow: 0 0 0 .2rem rgba(192,108,132,.20); }
+    footer { background: var(--nm-primary); color: var(--nm-bg); }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-nm py-3">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-4" href="index.html">NativaMarket</a>
+      <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="index.html#catalogo">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link active" href="aviso.html">Avísame</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">🛒 Carrito</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-7">
+        <div class="form-card shadow-sm p-4 p-md-5">
+          <h1 class="mb-2" style="color:var(--nm-primary)">Avísame cuando esté disponible</h1>
+          <p class="text-muted mb-4">¿Un producto está agotado? Déjanos tu contacto y te avisamos apenas vuelva a estar disponible.</p>
+
+          <form id="form-aviso">
+            <div class="mb-3">
+              <label for="producto" class="form-label fw-semibold">Producto</label>
+              <select class="form-select" id="producto" required>
+                <option value="" selected disabled>Elige un producto…</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <label for="contacto" class="form-label fw-semibold">Tu contacto</label>
+              <input type="text" class="form-control" id="contacto" placeholder="Correo o teléfono" required>
+            </div>
+            <button type="submit" class="btn btn-nm px-4" id="btn-enviar">Avísame</button>
+          </form>
+
+          <div id="mensaje" class="mt-4"></div>
+        </div>
+        <a href="index.html" class="d-inline-block mt-3" style="color:var(--nm-primary);font-weight:600;text-decoration:none">← Volver al catálogo</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="py-4 mt-4">
+    <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+      <span class="fw-semibold">NativaMarket</span>
+      <small>Lo hecho en Guatemala, reunido en un solo lugar.</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const SUPABASE_URL = 'https://gvctsjfbshalungoowia.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_SmUtS5BsKqTo5V75s1UceA_ziu1AR0H';
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // Poblar el select de productos desde el catálogo
+    fetch('data/products.json')
+      .then(r => r.json())
+      .then(productos => {
+        const sel = document.getElementById('producto');
+        productos.forEach(p => {
+          const o = document.createElement('option');
+          o.value = p.name;
+          o.textContent = p.name;
+          sel.appendChild(o);
+        });
+      })
+      .catch(() => {});
+
+    const form = document.getElementById('form-aviso');
+    const mensaje = document.getElementById('mensaje');
+    const btn = document.getElementById('btn-enviar');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      mensaje.innerHTML = '';
+      btn.disabled = true;
+
+      const producto = document.getElementById('producto').value;
+      const contacto = document.getElementById('contacto').value.trim();
+
+      const { error } = await supabase
+        .from('avisos_disponibilidad')
+        .insert({ producto, contacto });
+
+      if (error) {
+        btn.disabled = false;
+        mensaje.innerHTML = `<div class="alert alert-danger mb-0">No se pudo guardar: ${error.message}</div>`;
+      } else {
+        form.classList.add('d-none');
+        mensaje.innerHTML = `<div class="alert alert-success mb-0">
+          ¡Gracias! Te avisaremos en <strong>${contacto}</strong> cuando <strong>${producto}</strong> esté disponible.
+        </div>`;
+      }
+    });
+  </script>
+</body>
+</html>
