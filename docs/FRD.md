@@ -2,7 +2,7 @@
 
 Este documento describe, pantalla por pantalla, cada funcionalidad **Must** del MVP: qué ve el usuario, qué entra (inputs), qué sale (outputs) y los casos borde que hay que manejar.
 
-> **Estado del prototipo (D2):** el **Feature 1 (Catálogo + Ficha de producto)** está construido y cableado a los datos de `data/products.json`, con navegación en ambos sentidos. Los **Features 2, 3 y 4** son el roadmap del MVP y todavía no están implementados en el prototipo.
+> **Estado del prototipo (D3):** están construidos el **Feature 1 (Catálogo + Ficha de producto)**, cableado a `data/products.json` con navegación en ambos sentidos, y el **Feature 4 (Registro de interés — formulario "Avísame")**, que escribe en una tabla de Supabase. Los **Features 2 y 3** (carrito/checkout y soporte de garantía) siguen como roadmap del MVP y todavía no están implementados.
 
 ---
 
@@ -57,9 +57,11 @@ Este documento describe, pantalla por pantalla, cada funcionalidad **Must** del 
 
 ---
 
-## Feature 4 — Registro de interés (Should, referencia)
+## Feature 4 — Registro de interés (formulario "Avísame") *(construido)*
 
-- **Qué ve el usuario:** en productos agotados o en pre-venta, botón "Avísame cuando esté disponible".
-- **Inputs:** correo o teléfono del comprador.
-- **Outputs:** confirmación de que quedó registrado para aviso.
-- **Casos borde:** contacto ya registrado para ese producto → no se duplica y se confirma que ya está en la lista.
+### Pantalla: Avísame cuando esté disponible (`aviso.html`)
+- **Qué ve el usuario:** un formulario con dos campos —**Producto** (desplegable con los productos del catálogo) y **Tu contacto** (correo o teléfono)— y un botón "Avísame".
+- **Cómo se llega:** desde el enlace "Avísame" del navbar (con el producto libre de elegir), o desde el botón "Avísame cuando esté disponible" en la ficha de un producto agotado (llega con ese producto **pre-seleccionado y el desplegable bloqueado**).
+- **Inputs:** producto; correo o teléfono del comprador.
+- **Outputs:** se guarda una fila en la tabla `avisos_disponibilidad` de Supabase (columnas `producto`, `contacto`, más `id` y `created_at` automáticas) y se muestra un mensaje de agradecimiento. No se leen las filas de vuelta (la tabla solo permite insertar).
+- **Casos borde:** si el guardado falla, se muestra el mensaje de error en la página para poder leerlo.

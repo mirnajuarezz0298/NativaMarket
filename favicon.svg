@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="NativaMarket">
+  <rect width="64" height="64" rx="14" fill="#4A2545"/>
+  <path d="M25 27v-3a7 7 0 0 1 14 0v3" fill="none" stroke="#F7F0F5" stroke-width="3" stroke-linecap="round"/>
+  <path d="M20 27h24l-1.8 19.5A4 4 0 0 1 38.2 50H25.8a4 4 0 0 1-4-3.5L20 27z" fill="#F7F0F5"/>
+  <rect x="27" y="34" width="10" height="3" rx="1.5" fill="#C06C84"/>
+</svg>
