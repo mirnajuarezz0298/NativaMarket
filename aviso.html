@@ -90,13 +90,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-    const SUPABASE_URL = 'https://gvctsjfbshalungoowia.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_SmUtS5BsKqTo5V75s1UceA_ziu1AR0H';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
+  <script>
     // Poblar el select de productos desde el catálogo
     const productoParam = new URLSearchParams(location.search).get('producto');
     fetch('data/products.json')
@@ -130,18 +124,23 @@
       const producto = document.getElementById('producto').value;
       const contacto = document.getElementById('contacto').value.trim();
 
-      const { error } = await supabase
-        .from('avisos_disponibilidad')
-        .insert({ producto, contacto });
-
-      if (error) {
-        btn.disabled = false;
-        mensaje.innerHTML = `<div class="alert alert-danger mb-0">No se pudo guardar: ${error.message}</div>`;
-      } else {
+      try {
+        const resp = await fetch('/api/guardar-aviso', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ producto, contacto })
+        });
+        if (!resp.ok) {
+          const data = await resp.json().catch(() => ({}));
+          throw new Error(data.error || `Error ${resp.status}`);
+        }
         form.classList.add('d-none');
         mensaje.innerHTML = `<div class="alert alert-success mb-0">
           ¡Gracias! Te avisaremos en <strong>${contacto}</strong> cuando <strong>${producto}</strong> esté disponible.
         </div>`;
+      } catch (err) {
+        btn.disabled = false;
+        mensaje.innerHTML = `<div class="alert alert-danger mb-0">No se pudo guardar: ${err.message}</div>`;
       }
     });
   </script>

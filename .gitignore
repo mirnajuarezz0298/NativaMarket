@@ -1,0 +1,11 @@
+# Variables de entorno — NUNCA subir la secret key a GitHub
+.env
+.env.local
+.env.*.local
+
+# Vercel
+.vercel
+
+# Sistema operativo / editor
+.DS_Store
+.vscode/
